@@ -8,7 +8,7 @@ def main(source_path,demo_name):
     deploy.deploy(demo_name)
     #docker build -t webserver-image:v1 .
     #docker run -d -p 80:80 --rm --name audio-demo webserver-image:v1 
-    webbrowser.open_new_tab('http://localhost:9999')
+    webbrowser.open_new_tab('http://localhost')
 
 if __name__ == "__main__":
     demo_name = 'Audio demo'
