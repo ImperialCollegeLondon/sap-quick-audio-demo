@@ -49,7 +49,7 @@ def make_html(source_path,demo_name):
 if __name__ == "__main__":
     demo_name = 'Audio demo'
     if len(sys.argv) < 2:
-        print "Usage python make_html.py path_to_audio [demo_name]"
+        print("Usage python make_html.py path_to_audio [demo_name]")
     else:
         source_path = sys.argv[1]
         if len(sys.argv) > 2:
