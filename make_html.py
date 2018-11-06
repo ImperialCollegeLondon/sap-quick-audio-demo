@@ -17,13 +17,13 @@ def strToFile(text, filename):
     output.write(text)
     output.close()
 
-def make_html(source_path,demo_name):
+def make_html(source_path,demo_title):
     # output directory is hardwired
     out_audio_dir = 'audio'
     out_dir_rel = os.path.join('html',out_audio_dir)
     
     # title is easy
-    title = demo_name
+    title = demo_title
     
     # deal with files
     # - create empty string
@@ -31,8 +31,7 @@ def make_html(source_path,demo_name):
     # -- copy file
     # -- append track element by substituting track template
     # - substitute list of tracks into player template
-    
-    
+    # - substitute player into index template
     track_list = []
     search_str = source_path + '/*.wav'
     input_files = glob.glob(search_str)
@@ -46,12 +45,13 @@ def make_html(source_path,demo_name):
     contents = fileToStr('indexTemplate.html').format(**locals())
     strToFile(contents, 'html/index.html')
 
+
 if __name__ == "__main__":
-    demo_name = 'Audio demo'
+    demo_title = 'Audio demo'
     if len(sys.argv) < 2:
-        print("Usage python make_html.py path_to_audio [demo_name]")
+        print("Usage python make_html.py path_to_audio [demo_title]")
     else:
         source_path = sys.argv[1]
         if len(sys.argv) > 2:
-            demo_name = sys.argv[2]
-        make_html(source_path,demo_name)
+            demo_title = sys.argv[2]
+        make_html(source_path,demo_title)

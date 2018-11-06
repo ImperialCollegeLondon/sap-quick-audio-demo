@@ -4,26 +4,42 @@ import sys
 #from docker import Client
 import docker
 
-def deploy(demo_name):
-    demo_name = 'audio-demo'
+def cleanup(image_instance):
+    client = docker.from_env()
+    try:
+        container = client.containers.get(image_instance)
+        print("Found container")
+    except docker.errors.NotFound:
+        print("Didn't find the container - OK")
+    else:
+        container.stop() # using autoremove option so this should be enough to reuse the name
+        print("Called stop.")
+
+
+def deploy(image_instance):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     image_name = 'webserver-image'
     
-    ## do it using from_env() - v2 no checking, have to stop container using command line
+    ## do it using from_env() - v3 stop before writing container
+    cleanup(image_instance)
+    
     client = docker.from_env()
-    client.images.build(path=dir_path, tag=image_name)
+    try:
+        client.images.build(path=dir_path, tag=image_name)
+    except docker.errors.BuildError: 
+        print("Build error")
+        raise
+        
     container = client.containers.run(
         image_name,
         ports={80:80},
-        name=demo_name,
+        name=image_instance,
         detach=True,
+        auto_remove=True,
     )
     
 if __name__ == "__main__":
     import sys
-    demo_name = 'audio-demo'
-    # if len(sys.argv) > 0:
-    #     demo_name = sys.argv[1]
-    #     demo_name = ''.join(demo_name.split()) #endure there is no white space
-    # print(demo_name)
-    deploy(demo_name)
+    image_instance = 'audio-demo'
+    cleanup(image_instance)
+    deploy(image_instance)
