@@ -24,16 +24,17 @@ fi
 SOURCE=$1
 if [ $# -gt 1 ]
 then
-    NAME='Audio Demo'
-else
     NAME=$2
+else
+    NAME='Audio Demo'
 fi
 echo Making $NAME from $SOURCE
 
 # simple test is to copy html file directly
 #cp indexTemplate.html html/index.html
 
-python make_html.py --source=${SOURCE} --name=${NAME}
+#python make_html.py --source=${SOURCE} --name=${NAME}
+python make_html.py "${SOURCE}" "${NAME}"
 
 docker build -t webserver-image:v1 .
 docker run -d -p 80:80 --rm --name audio-demo webserver-image:v1 
