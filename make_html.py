@@ -21,6 +21,7 @@ def make_html(source_path,demo_title):
     # output directory is hardwired
     out_audio_dir = 'audio'
     out_dir_rel = os.path.join('html',out_audio_dir)
+    os.makedirs(out_dir_rel, exist_ok=True)
     
     # title is easy
     title = demo_title
