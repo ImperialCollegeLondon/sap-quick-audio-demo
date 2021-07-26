@@ -5,7 +5,12 @@ import sys
 import docker
 
 def cleanup(image_instance):
-    client = docker.from_env()
+    try:
+        client = docker.from_env()
+    except docker.errors.DockerException as e:
+        print('Calling docker.from_env() failed. Make sure docker is running.')
+        sys.exit(1) # non-zero exit code for failure
+        
     try:
         container = client.containers.get(image_instance)
         print("Found container")
@@ -26,7 +31,12 @@ def deploy(image_instance):
     ## do it using from_env() - v3 stop before writing container
     cleanup(image_instance)
     
-    client = docker.from_env()
+    try:
+        client = docker.from_env()
+    except docker.errors.DockerException as e:
+        print('Calling docker.from_env() failed. Make sure docker is running.')
+        sys.exit(1) # non-zero exit code for failure
+
     try:
         client.images.build(path=dir_path, tag=image_name)
     except docker.errors.BuildError: 
