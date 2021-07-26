@@ -26,7 +26,9 @@ python make_demo.py <source_dir> <demo_title>
 ```
 
 where
+
 `<source_dir>` is the path to a folder containing the wav files to be included, and
+
 `<demo_title>` is an optional string added to the webpage tab
 
 ## Finish
